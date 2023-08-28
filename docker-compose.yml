@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  sftp:
+    image: atmoz/sftp
+    container_name: sftp
+    restart: always
+    expose:
+      - "${SFTP_PORT}"
+    ports:
+      - "${SFTP_PORT}:${SFTP_PORT}"
+    command:
+      - "${SFTP_USERNAME}:${SFTP_PASSWORD}::1000::${DATA_STORE}" # syntax: user:password[:e][:uid[:gid[:dir1[,dir2]...]]]
+    volumes:
+      - "./data:/home/${SFTP_USERNAME}/data"
+      - "./ssh/ssh_host_rsa_key.pub:/home/${SFTP_USERNAME}/.ssh/ssh_host_rsa_key.pub:ro"
+      - "./ssh/ssh_host_ed25519_key.pub:/home/${SFTP_USERNAME}/.ssh/ssh_host_ed25519_key.pub:ro"
